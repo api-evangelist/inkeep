@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Inkeep AI & Analytics API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Chat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a RAG chat completion",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inkeep.com/v1/chat/completions",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"model\": \"inkeep-qa-expert\",\n  \"messages\": [\n    { \"role\": \"user\", \"content\": \"How do I get started?\" }\n  ],\n  \"stream\": false\n}"
+            }
+          },
+          "docs": "OpenAI-compatible RAG chat completion. Set model to an Inkeep mode (inkeep-qa, inkeep-context, inkeep-rag, inkeep-base) and stream:true for SSE."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Analytics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Log a conversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inkeep.com/v1/conversations",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"type\": \"openai\",\n  \"messages\": [\n    { \"role\": \"user\", \"content\": \"How do I get started?\" },\n    { \"role\": \"assistant\", \"content\": \"Here is how to get started...\" }\n  ]\n}"
+            }
+          },
+          "docs": "Log an OpenAI-compatible conversation to the Analytics service."
+        },
+        {
+          "info": {
+            "name": "Fetch a conversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inkeep.com/v1/conversations/:id"
+          },
+          "docs": "Fetch a previously logged conversation by id."
+        },
+        {
+          "info": {
+            "name": "Log feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inkeep.com/v1/feedback",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"type\": \"positive\",\n  \"messageId\": \"<message_id>\"\n}"
+            }
+          },
+          "docs": "Log positive or negative end-user feedback for a logged message."
+        },
+        {
+          "info": {
+            "name": "Log a custom event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inkeep.com/v1/events",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"type\": \"answer_copied\",\n  \"conversationId\": \"<conversation_id>\"\n}"
+            }
+          },
+          "docs": "Log a custom user-interaction event such as answer_copied or chat_shared."
+        }
+      ]
+    }
+  ]
+}

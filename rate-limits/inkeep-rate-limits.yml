@@ -1,0 +1,66 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Inkeep
+providerId: inkeep
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- AI
+- Support
+- RAG
+- Agents
+- Documentation
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Inkeep's AI / RAG chat completions endpoint applies per-IP rate throttling
+  and bounds each chat session to roughly 30 messages, with recommended input
+  of <=100 tokens and output of <=1,000 tokens per request. Inkeep does not
+  publish exact numeric per-account RPM/TPM ceilings; effective limits depend
+  on plan and quoted usage. Specific values are not reconciled in this artifact.
+notes: >-
+  Confirm per-endpoint and per-plan limits with Inkeep during reconciliation;
+  the documented constraints below are the publicly stated ones.
+sources:
+- https://docs.inkeep.com/cloud/ai-api/chat-completions-api
+- https://docs.inkeep.com/cloud/overview/developer-platform
+- https://docs.inkeep.com/cloud/faqs/pricing
+responseCodes:
+  throttled: 429
+limits:
+- name: Per-IP Throttling
+  scope: ip
+  metric: requests
+  limit: see provider documentation
+  notes: The AI / RAG chat completions endpoint throttles requests per IP address.
+- name: Messages Per Chat Session
+  scope: session
+  metric: messages
+  limit: 30
+  notes: A single chat session is bounded to approximately 30 messages.
+- name: Recommended Input Tokens
+  scope: request
+  metric: tokens
+  limit: 100
+  notes: Recommended maximum input of about 100 tokens per request.
+- name: Recommended Output Tokens
+  scope: request
+  metric: tokens
+  limit: 1000
+  notes: Recommended maximum output of about 1,000 tokens per request.
+- name: Account Rate Limits
+  scope: account
+  metric: requests
+  limit: see provider documentation
+  notes: Per-account ceilings depend on plan and quoted usage; not publicly numbered.
+policies:
+- name: Plan-Based Limits
+  description: Effective limits scale with the quoted self-serve or Enterprise plan.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor 429 responses.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

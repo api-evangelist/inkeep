@@ -1,0 +1,65 @@
+aid: inkeep
+name: Inkeep
+review:
+  question: Does Inkeep expose a documented public WebSocket API?
+  answer: false
+  date: '2026-06-20'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: true
+  asyncapiScopeNote: |
+    Per API Evangelist scope, HTTP Server-Sent Events (SSE) is in-scope for
+    AsyncAPI modeling. An AsyncAPI 2.6 document was created at
+    asyncapi/inkeep-asyncapi.yml describing the chat completion SSE stream
+    (POST /chat/completions with stream=true). No WebSocket surface was
+    modeled because none is documented.
+findings:
+  summary: |
+    Inkeep does not publish a documented public WebSocket API. The Inkeep
+    developer platform is OpenAI-compatible and exposes REST (HTTPS) endpoints
+    under https://api.inkeep.com/v1. The AI / RAG chat completions endpoint
+    supports streaming, delivered as HTTP Server-Sent Events (SSE) via the
+    `stream: true` request parameter; SSE is a one-way HTTP streaming transport
+    and is not WebSocket. The Analytics API (conversations, feedback, events)
+    and the Agents / management surface are plain REST. No realtime,
+    bidirectional WebSocket (ws:// or wss://) endpoint is documented.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.inkeep.com/v1
+      documented: true
+    - protocol: SSE
+      scheme: https
+      note: Server-Sent Events delivered over the same REST chat completions endpoint when stream=true. Not WebSocket.
+      documented: true
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in Inkeep's AI API, Analytics API, or Agents Manage API reference as of the review date.
+  endpointsConfirmedRest:
+    - POST https://api.inkeep.com/v1/chat/completions
+    - POST https://api.inkeep.com/v1/conversations
+    - GET  https://api.inkeep.com/v1/conversations/{id}
+    - POST https://api.inkeep.com/v1/feedback
+    - POST https://api.inkeep.com/v1/events
+sources:
+  - url: https://docs.inkeep.com/cloud/ai-api/chat-completions-api
+    type: Documentation
+    note: AI API overview; base URL https://api.inkeep.com/v1, OpenAI-compatible chat completions, Bearer API key.
+  - url: https://docs.inkeep.com/cloud/ai-api/rag-mode
+    type: APIReference
+    note: RAG mode POSTs to /v1/chat/completions; streaming via stream=true delivers SSE, not WebSocket.
+  - url: https://docs.inkeep.com/cloud/overview/developer-platform
+    type: Documentation
+    note: Lists AI API, Analytics API (conversations, feedback, events), and RAG/MCP; all REST.
+  - url: https://docs.inkeep.com/api-reference
+    type: APIReference
+    note: Inkeep Agents Manage API - REST endpoints only; no WebSocket surface.
+actions:
+  asyncapiPath: asyncapi/inkeep-asyncapi.yml
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. Under the scope that allows SSE in
+    AsyncAPI, an AsyncAPI 2.6 document was authored for the chat completion SSE
+    stream, with HTTP+SSE transport documented explicitly throughout the spec
+    (server protocol, channel bindings, info.x-transport-notes) so SSE is never
+    misrepresented as WebSocket.

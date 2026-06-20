@@ -1,0 +1,126 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Inkeep
+providerId: inkeep
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- AI
+- Support
+- RAG
+- Agents
+- Documentation
+- Plans
+description: >-
+  Inkeep is sales-led. The cloud platform does not publish a self-serve free
+  tier; it offers a time-limited demo sandbox over public content, and full
+  access (dashboard, analytics, Slack integration, UI components, developer
+  APIs) is sold via quoted self-serve and Enterprise plans. Pricing is
+  usage-aware - Inkeep states it accounts for expected usage in the quote, and
+  that unlimited searches are included in any plan. The Inkeep Agents framework
+  is also available as open source (free, self-hosted). Public third-party
+  listings cite approximate paid entry points, but Inkeep does not publish fixed
+  list prices, so per-plan amounts are not reconciled here.
+notes: >-
+  Dollar amounts seen in third-party directories (e.g. ~$150-$200/mo entry,
+  ~$500/mo scale) are unverified against Inkeep's own published pricing and are
+  not treated as authoritative. Confirm current plans and amounts with Inkeep
+  sales during reconciliation.
+sources:
+- https://docs.inkeep.com/cloud/faqs/pricing
+- https://docs.inkeep.com/cloud/overview/developer-platform
+- https://inkeep.com
+- https://github.com/inkeep/agents
+plans:
+- id: inkeep-open-source
+  name: Open Source (Agents Framework)
+  type: free
+  description: >-
+    The Inkeep Agents framework is available as open source for self-hosting -
+    build agents in a no-code visual builder or the TypeScript SDK at no
+    license cost.
+  entries:
+  - label: Open Source License
+    name: open_source
+    type: free
+    metric: license
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: free (self-hosted)
+    userMultiplied: false
+  elements:
+  - name: Agents Framework
+  - name: Visual Builder
+  - name: TypeScript SDK
+- id: inkeep-demo
+  name: Demo Sandbox
+  type: free
+  description: >-
+    A time-limited demo sandbox (around 30 days) over public content for
+    evaluating the cloud platform. Not a permanent free tier.
+  entries:
+  - label: Demo Sandbox
+    name: demo
+    type: free
+    metric: days
+    limit: 30
+    timeFrame: day
+    geo: global
+    unit: 1
+    price: free (evaluation)
+    userMultiplied: false
+  elements:
+  - name: Public Content Review
+- id: inkeep-self-serve
+  name: Self-Serve (Quoted)
+  type: subscription
+  description: >-
+    Full cloud platform access - dashboard, analytics, Slack integration, UI
+    components, and developer APIs (AI / RAG, Analytics, Agents). Priced via a
+    usage-aware quote; unlimited searches included.
+  entries:
+  - label: Platform Subscription
+    name: self_serve
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: contact sales (quoted, usage-aware)
+    userMultiplied: false
+  elements:
+  - name: Dashboard
+  - name: Analytics
+  - name: AI / RAG API
+  - name: Analytics API
+  - name: Slack Integration
+  - name: UI Components
+- id: inkeep-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Custom solutions for teams with unique requirements - higher usage,
+    advanced security, and dedicated support. Contact Inkeep sales.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Usage
+  - name: Advanced Security
+  - name: Dedicated Support
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,198 @@
+{
+  "info": {
+    "name": "Inkeep AI & Analytics API",
+    "description": "OpenAI-compatible RAG chat completions plus the Analytics API (conversations, feedback, events) for Inkeep's developer platform. Authenticate with a Bearer API key from the Inkeep dashboard.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.inkeep.com/v1",
+      "type": "string"
+    },
+    {
+      "key": "bearerToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Chat",
+      "description": "OpenAI-compatible RAG chat completions over your content.",
+      "item": [
+        {
+          "name": "Create a RAG chat completion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/chat/completions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chat",
+                "completions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"inkeep-qa-expert\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"How do I get started?\"\n    }\n  ],\n  \"stream\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Create an OpenAI-compatible chat completion. Set `model` to an Inkeep mode (inkeep-qa, inkeep-context, inkeep-rag, inkeep-base) and `stream: true` for SSE."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "description": "Log conversations, feedback, and custom interaction events.",
+      "item": [
+        {
+          "name": "Log a conversation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/conversations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversations"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"openai\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"How do I get started?\"\n    },\n    {\n      \"role\": \"assistant\",\n      \"content\": \"Here is how to get started...\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Log an OpenAI-compatible conversation to the Analytics service."
+          }
+        },
+        {
+          "name": "Fetch a conversation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/conversations/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversations",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "The conversation identifier."
+                }
+              ]
+            },
+            "description": "Fetch a previously logged conversation by id."
+          }
+        },
+        {
+          "name": "Log feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/feedback",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "feedback"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"positive\",\n  \"messageId\": \"<message_id>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Log positive or negative end-user feedback for a logged message."
+          }
+        },
+        {
+          "name": "Log a custom event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "events"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"answer_copied\",\n  \"conversationId\": \"<conversation_id>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Log a custom user-interaction event such as answer_copied or chat_shared."
+          }
+        }
+      ]
+    }
+  ]
+}

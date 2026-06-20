@@ -1,0 +1,106 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Inkeep
+providerId: inkeep
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- AI
+- Support
+- RAG
+- Agents
+- Documentation
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Inkeep spend. Inkeep is sales-led and does not publish fixed
+  list prices; the cloud platform is sold via usage-aware quoted self-serve and
+  Enterprise subscriptions, with unlimited searches included and the Agents
+  framework also available as free open source. Because Inkeep does not expose
+  per-token or per-resolution public unit rates, cost meters below are modeled
+  from documented usage signals (conversations, messages, feedback, events,
+  searches) rather than reconciled rate cards.
+notes: >-
+  No public per-unit rates are published; amounts and metering are quote-based.
+  Verify the actual billed dimensions and rates in your Inkeep agreement during
+  reconciliation.
+sources:
+- https://docs.inkeep.com/cloud/faqs/pricing
+- https://docs.inkeep.com/cloud/overview/developer-platform
+- https://inkeep.com
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Inkeep
+serviceCategory: AI and Machine Learning
+billingModel:
+  pricingCategory: Subscription
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Inkeep
+  ServiceCategory: AI and Machine Learning
+  ProviderName: Inkeep
+  PublisherName: Inkeep
+  InvoiceIssuerName: Inkeep
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Subscription
+meters:
+- name: conversations
+  description: AI / RAG conversations served and logged, an account-level usage signal.
+  unit: conversations
+  aggregation: sum
+  dimensions:
+  - account
+  - assistant
+- name: messages
+  description: Messages exchanged within chat sessions (sessions bounded to ~30 messages).
+  unit: messages
+  aggregation: sum
+  dimensions:
+  - account
+  - conversation
+- name: searches
+  description: Knowledge-base searches; documented as unlimited / included in plans.
+  unit: searches
+  aggregation: sum
+  dimensions:
+  - account
+- name: analytics_events
+  description: Custom interaction events logged to the Analytics API (answer_copied, chat_shared).
+  unit: events
+  aggregation: sum
+  dimensions:
+  - account
+  - type
+- name: feedback_submissions
+  description: End-user feedback records logged to the Analytics API.
+  unit: submissions
+  aggregation: sum
+  dimensions:
+  - account
+  - type
+principles:
+- name: Visibility
+  description: Use the Inkeep Portal and Analytics API to see conversations, feedback, and events per assistant.
+- name: Allocation
+  description: Tag conversations and API keys per assistant / team and map to internal cost centers.
+- name: Optimization
+  description: Right-size the quoted plan to expected usage; keep inputs <=100 and outputs <=1,000 tokens; self-host the open-source Agents framework where it fits.
+- name: Accountability
+  description: Assign owners per assistant; review usage and quoted-plan fit against budget regularly.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

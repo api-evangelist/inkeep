@@ -1,0 +1,476 @@
+openapi: 3.0.1
+info:
+  title: Inkeep AI & Analytics API
+  description: >-
+    Specification of Inkeep's developer platform REST surface. The AI API is an
+    OpenAI-compatible chat completions endpoint that performs retrieval-augmented
+    generation (RAG) over your own content. The RAG mode (`inkeep-qa`,
+    `inkeep-context`, `inkeep-rag`, `inkeep-base`) is selected via the OpenAI
+    `model` field. The Analytics API logs OpenAI-compatible conversations,
+    captures end-user feedback, and records custom interaction events for
+    reporting in the Inkeep Portal. All endpoints authenticate with a Bearer
+    API key issued from the Inkeep dashboard.
+  termsOfService: https://inkeep.com/terms
+  contact:
+    name: Inkeep Support
+    email: support@inkeep.com
+    url: https://inkeep.com
+  version: '1.0'
+servers:
+  - url: https://api.inkeep.com/v1
+    description: Inkeep developer platform base (OpenAI-compatible).
+security:
+  - bearerAuth: []
+tags:
+  - name: Chat
+    description: OpenAI-compatible RAG chat completions over your content.
+  - name: Analytics
+    description: Log conversations, feedback, and custom interaction events.
+paths:
+  /chat/completions:
+    post:
+      operationId: createChatCompletion
+      tags:
+        - Chat
+      summary: Create a RAG chat completion (OpenAI-compatible).
+      description: >-
+        OpenAI-compatible chat completions endpoint. The `model` field selects
+        the Inkeep RAG mode - `inkeep-qa` (customer-facing support answers),
+        `inkeep-context` (flexible RAG with tool calling), `inkeep-rag` (raw
+        retrieved content chunks), or `inkeep-base` (fast mode). Set
+        `stream: true` to receive the response as Server-Sent Events.
+      parameters:
+        - name: inkeep-filters
+          in: header
+          required: false
+          description: >-
+            Optional JSON object restricting retrieval to specific source IDs.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateChatCompletionRequest'
+      responses:
+        '200':
+          description: A chat completion (or an SSE stream when `stream` is true).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletion'
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionChunk'
+        '401':
+          description: Missing or invalid API key.
+        '429':
+          description: Rate limit exceeded.
+  /conversations:
+    post:
+      operationId: createConversation
+      tags:
+        - Analytics
+      summary: Log an OpenAI-compatible conversation.
+      description: >-
+        Logs a complete OpenAI-format conversation (messages plus metadata) to
+        the Inkeep Analytics service so it is viewable and reportable in the
+        Inkeep Portal.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateConversationRequest'
+      responses:
+        '200':
+          description: The created conversation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+        '401':
+          description: Missing or invalid API key.
+  /conversations/{id}:
+    get:
+      operationId: getConversation
+      tags:
+        - Analytics
+      summary: Fetch a logged conversation.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The conversation identifier.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The requested conversation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+        '404':
+          description: Conversation not found.
+  /feedback:
+    post:
+      operationId: createFeedback
+      tags:
+        - Analytics
+      summary: Log end-user feedback for a message.
+      description: >-
+        Records positive or negative end-user feedback on a logged message,
+        powering thumbs up / thumbs down style quality signals in the Portal.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFeedbackRequest'
+      responses:
+        '200':
+          description: The created feedback record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+  /events:
+    post:
+      operationId: logEvent
+      tags:
+        - Analytics
+      summary: Log a custom interaction event.
+      description: >-
+        Logs a custom user-interaction event such as `answer_copied` or
+        `chat_shared` for analytics and reporting.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEventRequest'
+      responses:
+        '200':
+          description: The created event record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Inkeep API key
+      description: >-
+        Bearer token using an API key created in the Inkeep dashboard under
+        Projects > Assistants > Create assistant > API. Set the header
+        `Authorization: Bearer <INKEEP_API_KEY>`.
+  schemas:
+    CreateChatCompletionRequest:
+      type: object
+      required:
+        - model
+        - messages
+      properties:
+        model:
+          type: string
+          description: >-
+            Selects the Inkeep RAG mode. Base modes can take an `-expert`
+            suffix for auto model selection or be pinned to a specific LLM.
+          enum:
+            - inkeep-qa
+            - inkeep-qa-expert
+            - inkeep-context
+            - inkeep-context-expert
+            - inkeep-rag
+            - inkeep-base
+          example: inkeep-qa-expert
+        messages:
+          type: array
+          description: A list of messages in the OpenAI chat format.
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+        stream:
+          type: boolean
+          default: false
+          description: >-
+            If true, the response is delivered as Server-Sent Events, each
+            data line carrying one `chat.completion.chunk` object, terminated
+            by `data: [DONE]`.
+        response_format:
+          type: object
+          description: >-
+            For `inkeep-rag`, set `{ "type": "json_object" }` to receive the
+            retrieved document chunks as a stringified JSON object.
+          properties:
+            type:
+              type: string
+              enum:
+                - text
+                - json_object
+        temperature:
+          type: number
+          nullable: true
+          description: Sampling temperature passed through to the underlying model.
+    ChatMessage:
+      type: object
+      required:
+        - role
+        - content
+      properties:
+        role:
+          type: string
+          enum:
+            - system
+            - user
+            - assistant
+            - tool
+          description: The role of the message author.
+        content:
+          type: string
+          description: The message content.
+    ChatCompletion:
+      type: object
+      description: An OpenAI-compatible chat completion response.
+      required:
+        - id
+        - object
+        - created
+        - model
+        - choices
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the chat completion.
+        object:
+          type: string
+          enum:
+            - chat.completion
+          description: Object type, always `chat.completion`.
+        created:
+          type: integer
+          description: Unix timestamp (seconds) of creation.
+        model:
+          type: string
+          description: The Inkeep model/mode used.
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionChoice'
+        usage:
+          $ref: '#/components/schemas/Usage'
+    ChatCompletionChoice:
+      type: object
+      required:
+        - index
+        - message
+        - finish_reason
+      properties:
+        index:
+          type: integer
+        message:
+          $ref: '#/components/schemas/AssistantMessage'
+        finish_reason:
+          type: string
+          nullable: true
+          enum:
+            - stop
+            - length
+            - tool_calls
+    AssistantMessage:
+      type: object
+      required:
+        - role
+        - content
+      properties:
+        role:
+          type: string
+          enum:
+            - assistant
+        content:
+          type: string
+          description: >-
+            The generated answer. For `inkeep-rag` this is a stringified JSON
+            object containing the retrieved document array.
+        records_cited:
+          type: object
+          nullable: true
+          description: >-
+            Citations - source records referenced in the answer, surfaced for
+            QA and context modes.
+          properties:
+            citations:
+              type: array
+              items:
+                $ref: '#/components/schemas/Citation'
+    Citation:
+      type: object
+      properties:
+        record:
+          type: object
+          description: The cited source record.
+          properties:
+            type:
+              type: string
+            url:
+              type: string
+              nullable: true
+            title:
+              type: string
+              nullable: true
+    ChatCompletionChunk:
+      type: object
+      description: A single streamed chunk of an SSE chat completion response.
+      required:
+        - id
+        - object
+        - created
+        - model
+        - choices
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+            - chat.completion.chunk
+        created:
+          type: integer
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              delta:
+                type: object
+                properties:
+                  role:
+                    type: string
+                  content:
+                    type: string
+                    nullable: true
+              finish_reason:
+                type: string
+                nullable: true
+    Usage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+    CreateConversationRequest:
+      type: object
+      required:
+        - type
+        - messages
+      properties:
+        type:
+          type: string
+          description: The conversation type (e.g. `openai`).
+          example: openai
+        messages:
+          type: array
+          description: The OpenAI-format messages that make up the conversation.
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+        userProperties:
+          type: object
+          nullable: true
+          description: Optional end-user properties to associate with the conversation.
+        properties:
+          type: object
+          nullable: true
+          description: Optional arbitrary metadata for the conversation.
+    Conversation:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: The conversation identifier.
+        type:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+    CreateFeedbackRequest:
+      type: object
+      required:
+        - type
+        - messageId
+      properties:
+        type:
+          type: string
+          description: Feedback polarity.
+          enum:
+            - positive
+            - negative
+        messageId:
+          type: string
+          description: The logged message the feedback applies to.
+        reasons:
+          type: array
+          nullable: true
+          description: Optional reason codes for the feedback.
+          items:
+            type: string
+    Feedback:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        messageId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    CreateEventRequest:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          description: The custom event type.
+          example: answer_copied
+        conversationId:
+          type: string
+          nullable: true
+          description: Optional conversation the event is associated with.
+        properties:
+          type: object
+          nullable: true
+          description: Optional arbitrary metadata for the event.
+    Event:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        createdAt:
+          type: string
+          format: date-time

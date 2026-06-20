@@ -1,0 +1,105 @@
+aid: inkeep
+url: https://raw.githubusercontent.com/api-evangelist/inkeep/refs/heads/main/apis.yml
+name: Inkeep
+kind: company
+description: Inkeep is an AI support and agent platform for documentation and products.
+  Its developer platform exposes an OpenAI-compatible RAG / chat completions API over
+  your own content, an Analytics API for logging conversations, feedback, and events,
+  and an Agents / management surface for building and operating AI agents and
+  copilot experiences.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- AI
+- Support
+- RAG
+- Agents
+- Documentation
+created: '2026-06-20'
+modified: '2026-06-20'
+specificationVersion: '0.19'
+apis:
+- aid: inkeep:inkeep-chat-completions-api
+  name: Inkeep Chat Completions (RAG) API
+  tags:
+  - Chat
+  - Completions
+  - RAG
+  - LLM
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.inkeep.com/cloud/ai-api/chat-completions-api
+  baseURL: https://api.inkeep.com/v1
+  properties:
+  - url: https://docs.inkeep.com/cloud/ai-api/chat-completions-api
+    type: Documentation
+  - url: https://docs.inkeep.com/cloud/ai-api/rag-mode
+    type: APIReference
+  - url: openapi/inkeep-openapi.yml
+    type: OpenAPI
+  - url: asyncapi/inkeep-asyncapi.yml
+    type: AsyncAPI
+  - url: collections/inkeep.postman_collection.json
+    type: PostmanCollection
+  - url: collections/inkeep.opencollection.json
+    type: OpenCollection
+  description: OpenAI-compatible chat completions endpoint that runs retrieval-augmented
+    generation over your own content. Modes (inkeep-qa, inkeep-context, inkeep-rag,
+    inkeep-base) are selected through the OpenAI `model` field, with streaming via
+    Server-Sent Events and citations returned alongside answers.
+- aid: inkeep:inkeep-analytics-api
+  name: Inkeep Analytics API
+  tags:
+  - Analytics
+  - Conversations
+  - Feedback
+  - Events
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.inkeep.com/cloud/overview/developer-platform
+  baseURL: https://api.inkeep.com/v1
+  properties:
+  - url: https://docs.inkeep.com/cloud/overview/developer-platform
+    type: Documentation
+  - url: openapi/inkeep-openapi.yml
+    type: OpenAPI
+  - url: collections/inkeep.postman_collection.json
+    type: PostmanCollection
+  - url: collections/inkeep.opencollection.json
+    type: OpenCollection
+  description: Logs and retrieves OpenAI-compatible conversations, captures end-user
+    feedback, and records custom interaction events (answer_copied, chat_shared) so
+    usage and quality are viewable and reportable in the Inkeep Portal.
+- aid: inkeep:inkeep-agents-management-api
+  name: Inkeep Agents / Management API
+  tags:
+  - Agents
+  - Management
+  - Projects
+  - Conversations
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.inkeep.com/api-reference
+  baseURL: https://api.inkeep.com
+  properties:
+  - url: https://docs.inkeep.com/api-reference
+    type: Documentation
+  - url: https://docs.inkeep.com/api-reference
+    type: APIReference
+  description: REST management surface for the Inkeep Agents framework - create and
+    operate agents, sub-agents, projects, tools, MCP servers, conversations, and
+    feedback for building no-code or TypeScript-SDK AI agent workflows.
+common:
+- type: GitHubOrganization
+  url: https://github.com/inkeep
+- type: LinkedIn
+  url: https://www.linkedin.com/company/inkeep
+- type: Website
+  url: https://inkeep.com
+- type: Documentation
+  url: https://docs.inkeep.com
+- type: Plans
+  url: plans/inkeep-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/inkeep-rate-limits.yml
+- type: FinOps
+  url: finops/inkeep-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
