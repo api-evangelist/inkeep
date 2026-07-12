@@ -1,0 +1,15 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/inkeep-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: Inkeep API key
+  description: 'Bearer token using an API key created in the Inkeep dashboard under Projects
+    > Assistants > Create assistant > API. Set the header `Authorization: Bearer <INKEEP_API_KEY>`.'
+  sources:
+  - openapi/inkeep-openapi.yml

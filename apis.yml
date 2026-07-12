@@ -86,6 +86,12 @@ apis:
     operate agents, sub-agents, projects, tools, MCP servers, conversations, and
     feedback for building no-code or TypeScript-SDK AI agent workflows.
 common:
+- type: TrustCenter
+  url: security/inkeep-trust-center.yml
+- type: DomainSecurity
+  url: security/inkeep-domain-security.yml
+- type: Authentication
+  url: authentication/inkeep-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/inkeep
 - type: LinkedIn
@@ -100,6 +106,8 @@ common:
   url: rate-limits/inkeep-rate-limits.yml
 - type: FinOps
   url: finops/inkeep-finops.yml
+- type: Blog
+  url: https://inkeep.com/blog/rss.xml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
