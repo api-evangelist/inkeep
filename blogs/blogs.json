@@ -1,0 +1,13 @@
+{
+  "repo": "inkeep",
+  "feeds": [
+    {
+      "source": "https://inkeep.com/blog/rss.xml",
+      "feed_url": "https://inkeep.com/blog/rss.xml",
+      "title": "Inkeep Blog",
+      "saved": 30
+    }
+  ],
+  "fetched": "2026-07-11T11:43:46Z",
+  "post_count": 55
+}
