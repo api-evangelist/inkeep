@@ -1,0 +1,16 @@
+{
+  "provider": "inkeep",
+  "sources": [
+    "inkeep-analytics-api-openapi.yml",
+    "inkeep-chat-api-openapi.yml"
+  ],
+  "outputs": [
+    "inkeep-analytics-api-openapi.yml",
+    "inkeep-chat-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
