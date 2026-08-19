@@ -1,0 +1,262 @@
+{
+  "item": [
+    {
+      "id": "46ee5014-78d6-4c4e-b070-9cbfe7d13813",
+      "name": "Chat",
+      "description": {
+        "content": "OpenAI-compatible RAG chat completions over your content.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c9262ded-51b7-4572-9587-60c144d9c8b4",
+          "name": "Create a RAG chat completion (OpenAI-compatible).",
+          "request": {
+            "name": "Create a RAG chat completion (OpenAI-compatible).",
+            "description": {
+              "content": "OpenAI-compatible chat completions endpoint. The `model` field selects the Inkeep RAG mode - `inkeep-qa` (customer-facing support answers), `inkeep-context` (flexible RAG with tool calling), `inkeep-rag` (raw retrieved content chunks), or `inkeep-base` (fast mode). Set `stream: true` to receive the response as Server-Sent Events.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "chat",
+                "completions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Optional JSON object restricting retrieval to specific source IDs.",
+                "key": "inkeep-filters",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"<string>\",\n  \"messages\": [\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\"\n    },\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\"\n    }\n  ],\n  \"stream\": false,\n  \"response_format\": {\n    \"type\": \"<string>\"\n  },\n  \"temperature\": \"<number>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7c0f1239-974a-4096-bf7f-d089a95c49d6",
+              "name": "A chat completion (or an SSE stream when `stream` is true).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chat",
+                    "completions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional JSON object restricting retrieval to specific source IDs.",
+                    "key": "inkeep-filters",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"inkeep-qa-expert\",\n  \"messages\": [\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\"\n    },\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\"\n    }\n  ],\n  \"stream\": false,\n  \"response_format\": {\n    \"type\": \"<string>\"\n  },\n  \"temperature\": \"<number>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"object\": \"chat.completion\",\n  \"created\": 7481,\n  \"model\": \"string\",\n  \"choices\": [\n    {\n      \"index\": 6647,\n      \"message\": {\n        \"role\": \"assistant\",\n        \"content\": \"string\",\n        \"records_cited\": {\n          \"citations\": [\n            {\n              \"record\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"record\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      },\n      \"finish_reason\": \"stop\"\n    },\n    {\n      \"index\": 1637,\n      \"message\": {\n        \"role\": \"assistant\",\n        \"content\": \"string\",\n        \"records_cited\": {\n          \"citations\": [\n            {\n              \"record\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"record\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      },\n      \"finish_reason\": \"length\"\n    }\n  ],\n  \"usage\": {\n    \"prompt_tokens\": 1539,\n    \"completion_tokens\": 4032,\n    \"total_tokens\": 8149\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5aafd738-9400-4b21-a2a0-788337c93e9c",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chat",
+                    "completions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional JSON object restricting retrieval to specific source IDs.",
+                    "key": "inkeep-filters",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"inkeep-qa-expert\",\n  \"messages\": [\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\"\n    },\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\"\n    }\n  ],\n  \"stream\": false,\n  \"response_format\": {\n    \"type\": \"<string>\"\n  },\n  \"temperature\": \"<number>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fc6f33ae-b0a3-415d-b2ea-a14c054572a0",
+              "name": "Rate limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "chat",
+                    "completions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional JSON object restricting retrieval to specific source IDs.",
+                    "key": "inkeep-filters",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"inkeep-qa-expert\",\n  \"messages\": [\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\"\n    },\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\"\n    }\n  ],\n  \"stream\": false,\n  \"response_format\": {\n    \"type\": \"<string>\"\n  },\n  \"temperature\": \"<number>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.inkeep.com/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "41bf436b-3d95-4ec4-b0f5-c5174ee3c58a",
+    "name": "Inkeep AI & Analytics Chat API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Specification of Inkeep's developer platform REST surface. The AI API is an OpenAI-compatible chat completions endpoint that performs retrieval-augmented generation (RAG) over your own content. The RAG mode (`inkeep-qa`, `inkeep-context`, `inkeep-rag`, `inkeep-base`) is selected via the OpenAI `model` field. The Analytics API logs OpenAI-compatible conversations, captures end-user feedback, and records custom interaction events for reporting in the Inkeep Portal. All endpoints authenticate with a Bearer API key issued from the Inkeep dashboard.\n\nContact Support:\n Name: Inkeep Support\n Email: support@inkeep.com",
+      "type": "text/plain"
+    }
+  }
+}

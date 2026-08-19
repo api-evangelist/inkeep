@@ -1,0 +1,88 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Inkeep AI & Analytics API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Analytics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Log an OpenAI-compatible conversation.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inkeep.com/v1/conversations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Logs a complete OpenAI-format conversation (messages plus metadata) to the Inkeep Analytics service so it is viewable and reportable in the Inkeep Portal."
+        },
+        {
+          "info": {
+            "name": "Fetch a logged conversation.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.inkeep.com/v1/conversations/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The conversation identifier."
+              }
+            ]
+          },
+          "docs": "Fetch a logged conversation."
+        },
+        {
+          "info": {
+            "name": "Log end-user feedback for a message.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inkeep.com/v1/feedback",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Records positive or negative end-user feedback on a logged message, powering thumbs up / thumbs down style quality signals in the Portal."
+        },
+        {
+          "info": {
+            "name": "Log a custom interaction event.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inkeep.com/v1/events",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Logs a custom user-interaction event such as `answer_copied` or `chat_shared` for analytics and reporting."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

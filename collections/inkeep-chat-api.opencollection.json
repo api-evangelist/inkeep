@@ -1,0 +1,45 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Inkeep AI & Analytics Chat API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Chat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a RAG chat completion (OpenAI-compatible).",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.inkeep.com/v1/chat/completions",
+            "headers": [
+              {
+                "name": "inkeep-filters",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "OpenAI-compatible chat completions endpoint. The `model` field selects the Inkeep RAG mode - `inkeep-qa` (customer-facing support answers), `inkeep-context` (flexible RAG with tool calling), `inkeep-rag` (raw retrieved content chunks), or `inkeep-base` (fast mode). Set `stream: true` to receive the response as Server-Sent Events."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
