@@ -22,6 +22,12 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/inkeep.png
 tags:
+- Artificial Intelligence
+- Support
+- RAG
+- Agents
+- Documentation
+tags_raw:
 - AI
 - Support
 - RAG
@@ -34,6 +40,11 @@ apis:
 - aid: inkeep:inkeep-agents-management-api
   name: Inkeep Agents / Management API
   tags:
+  - Agents
+  - Management
+  - Project
+  - Conversations
+  tags_raw:
   - Agents
   - Management
   - Projects
