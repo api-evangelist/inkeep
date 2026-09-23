@@ -1,7 +1,7 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Inkeep AI & Analytics API
-  description: Specification of Inkeep's developer platform REST surface. The AI API is an OpenAI-compatible chat completions endpoint that performs retrieval-augmented generation (RAG) over your own content. The RAG mode (`inkeep-qa`, `inkeep-context`, `inkeep-rag`, `inkeep-base`) is selected via the OpenAI `model` field. The Analytics API logs OpenAI-compatible conversations, captures end-user feedback, and records custom interaction events for reporting in the Inkeep Portal. All endpoints authenticate with a Bearer API key issued from the Inkeep dashboard.
+  title: Inkeep AI Analytics API
+  description: Specification of Inkeep's developer platform REST surface.
   termsOfService: https://inkeep.com/terms
   contact:
     name: Inkeep Support
@@ -22,7 +22,7 @@ paths:
       operationId: createConversation
       tags:
       - Analytics
-      summary: Log an OpenAI-compatible conversation.
+      summary: Log an OpenAI-compatible conversation
       description: Logs a complete OpenAI-format conversation (messages plus metadata) to the Inkeep Analytics service so it is viewable and reportable in the Inkeep Portal.
       requestBody:
         required: true
@@ -44,7 +44,7 @@ paths:
       operationId: getConversation
       tags:
       - Analytics
-      summary: Fetch a logged conversation.
+      summary: Fetch a logged conversation
       parameters:
       - name: id
         in: path
@@ -66,7 +66,7 @@ paths:
       operationId: createFeedback
       tags:
       - Analytics
-      summary: Log end-user feedback for a message.
+      summary: Log end-user feedback for a message
       description: Records positive or negative end-user feedback on a logged message, powering thumbs up / thumbs down style quality signals in the Portal.
       requestBody:
         required: true
@@ -86,7 +86,7 @@ paths:
       operationId: logEvent
       tags:
       - Analytics
-      summary: Log a custom interaction event.
+      summary: Log a custom interaction event
       description: Logs a custom user-interaction event such as `answer_copied` or `chat_shared` for analytics and reporting.
       requestBody:
         required: true
@@ -103,44 +103,38 @@ paths:
                 $ref: '#/components/schemas/Event'
 components:
   schemas:
-    CreateEventRequest:
+    Conversation:
       type: object
       required:
-      - type
+      - id
       properties:
+        id:
+          type: string
+          description: The conversation identifier.
         type:
           type: string
-          description: The custom event type.
-          example: answer_copied
-        conversationId:
+        createdAt:
           type: string
-          nullable: true
-          description: Optional conversation the event is associated with.
-        properties:
-          type: object
-          nullable: true
-          description: Optional arbitrary metadata for the event.
-    CreateFeedbackRequest:
+          format: date-time
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+    Feedback:
       type: object
       required:
+      - id
       - type
-      - messageId
       properties:
+        id:
+          type: string
         type:
           type: string
-          description: Feedback polarity.
-          enum:
-          - positive
-          - negative
         messageId:
           type: string
-          description: The logged message the feedback applies to.
-        reasons:
-          type: array
-          nullable: true
-          description: Optional reason codes for the feedback.
-          items:
-            type: string
+        createdAt:
+          type: string
+          format: date-time
     ChatMessage:
       type: object
       required:
@@ -158,6 +152,47 @@ components:
         content:
           type: string
           description: The message content.
+    CreateFeedbackRequest:
+      type: object
+      required:
+      - type
+      - messageId
+      properties:
+        type:
+          type: string
+          description: Feedback polarity.
+          enum:
+          - positive
+          - negative
+        messageId:
+          type: string
+          description: The logged message the feedback applies to.
+        reasons:
+          type:
+          - array
+          - 'null'
+          description: Optional reason codes for the feedback.
+          items:
+            type: string
+    CreateEventRequest:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          description: The custom event type.
+          example: answer_copied
+        conversationId:
+          type:
+          - string
+          - 'null'
+          description: Optional conversation the event is associated with.
+        properties:
+          type:
+          - object
+          - 'null'
+          description: Optional arbitrary metadata for the event.
     Event:
       type: object
       required:
@@ -167,21 +202,6 @@ components:
         id:
           type: string
         type:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-    Feedback:
-      type: object
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        messageId:
           type: string
         createdAt:
           type: string
@@ -202,30 +222,15 @@ components:
           items:
             $ref: '#/components/schemas/ChatMessage'
         userProperties:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           description: Optional end-user properties to associate with the conversation.
         properties:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           description: Optional arbitrary metadata for the conversation.
-    Conversation:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
-          description: The conversation identifier.
-        type:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatMessage'
   securitySchemes:
     bearerAuth:
       type: http

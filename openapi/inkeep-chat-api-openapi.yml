@@ -1,7 +1,7 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Inkeep AI & Analytics Chat API
-  description: Specification of Inkeep's developer platform REST surface. The AI API is an OpenAI-compatible chat completions endpoint that performs retrieval-augmented generation (RAG) over your own content. The RAG mode (`inkeep-qa`, `inkeep-context`, `inkeep-rag`, `inkeep-base`) is selected via the OpenAI `model` field. The Analytics API logs OpenAI-compatible conversations, captures end-user feedback, and records custom interaction events for reporting in the Inkeep Portal. All endpoints authenticate with a Bearer API key issued from the Inkeep dashboard.
+  description: Specification of Inkeep's developer platform REST surface.
   termsOfService: https://inkeep.com/terms
   contact:
     name: Inkeep Support
@@ -22,7 +22,7 @@ paths:
       operationId: createChatCompletion
       tags:
       - Chat
-      summary: Create a RAG chat completion (OpenAI-compatible).
+      summary: Create a RAG chat completion (OpenAI-compatible)
       description: 'OpenAI-compatible chat completions endpoint. The `model` field selects the Inkeep RAG mode - `inkeep-qa` (customer-facing support answers), `inkeep-context` (flexible RAG with tool calling), `inkeep-rag` (raw retrieved content chunks), or `inkeep-base` (fast mode). Set `stream: true` to receive the response as Server-Sent Events.'
       parameters:
       - name: inkeep-filters
@@ -53,6 +53,23 @@ paths:
           description: Rate limit exceeded.
 components:
   schemas:
+    Citation:
+      type: object
+      properties:
+        record:
+          type: object
+          description: The cited source record.
+          properties:
+            type:
+              type: string
+            url:
+              type:
+              - string
+              - 'null'
+            title:
+              type:
+              - string
+              - 'null'
     CreateChatCompletionRequest:
       type: object
       required:
@@ -89,9 +106,85 @@ components:
               - text
               - json_object
         temperature:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
           description: Sampling temperature passed through to the underlying model.
+    ChatMessage:
+      type: object
+      required:
+      - role
+      - content
+      properties:
+        role:
+          type: string
+          enum:
+          - system
+          - user
+          - assistant
+          - tool
+          description: The role of the message author.
+        content:
+          type: string
+          description: The message content.
+    ChatCompletionChoice:
+      type: object
+      required:
+      - index
+      - message
+      - finish_reason
+      properties:
+        index:
+          type: integer
+        message:
+          $ref: '#/components/schemas/AssistantMessage'
+        finish_reason:
+          type:
+          - string
+          - 'null'
+          enum:
+          - stop
+          - length
+          - tool_calls
+    ChatCompletion:
+      type: object
+      description: An OpenAI-compatible chat completion response.
+      required:
+      - id
+      - object
+      - created
+      - model
+      - choices
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the chat completion.
+        object:
+          type: string
+          enum:
+          - chat.completion
+          description: Object type, always `chat.completion`.
+        created:
+          type: integer
+          description: Unix timestamp (seconds) of creation.
+        model:
+          type: string
+          description: The Inkeep model/mode used.
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCompletionChoice'
+        usage:
+          $ref: '#/components/schemas/Usage'
+    Usage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
     ChatCompletionChunk:
       type: object
       description: A single streamed chunk of an SSE chat completion response.
@@ -125,82 +218,13 @@ components:
                   role:
                     type: string
                   content:
-                    type: string
-                    nullable: true
+                    type:
+                    - string
+                    - 'null'
               finish_reason:
-                type: string
-                nullable: true
-    Usage:
-      type: object
-      properties:
-        prompt_tokens:
-          type: integer
-        completion_tokens:
-          type: integer
-        total_tokens:
-          type: integer
-    Citation:
-      type: object
-      properties:
-        record:
-          type: object
-          description: The cited source record.
-          properties:
-            type:
-              type: string
-            url:
-              type: string
-              nullable: true
-            title:
-              type: string
-              nullable: true
-    ChatMessage:
-      type: object
-      required:
-      - role
-      - content
-      properties:
-        role:
-          type: string
-          enum:
-          - system
-          - user
-          - assistant
-          - tool
-          description: The role of the message author.
-        content:
-          type: string
-          description: The message content.
-    ChatCompletion:
-      type: object
-      description: An OpenAI-compatible chat completion response.
-      required:
-      - id
-      - object
-      - created
-      - model
-      - choices
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the chat completion.
-        object:
-          type: string
-          enum:
-          - chat.completion
-          description: Object type, always `chat.completion`.
-        created:
-          type: integer
-          description: Unix timestamp (seconds) of creation.
-        model:
-          type: string
-          description: The Inkeep model/mode used.
-        choices:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatCompletionChoice'
-        usage:
-          $ref: '#/components/schemas/Usage'
+                type:
+                - string
+                - 'null'
     AssistantMessage:
       type: object
       required:
@@ -215,32 +239,15 @@ components:
           type: string
           description: The generated answer. For `inkeep-rag` this is a stringified JSON object containing the retrieved document array.
         records_cited:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           description: Citations - source records referenced in the answer, surfaced for QA and context modes.
           properties:
             citations:
               type: array
               items:
                 $ref: '#/components/schemas/Citation'
-    ChatCompletionChoice:
-      type: object
-      required:
-      - index
-      - message
-      - finish_reason
-      properties:
-        index:
-          type: integer
-        message:
-          $ref: '#/components/schemas/AssistantMessage'
-        finish_reason:
-          type: string
-          nullable: true
-          enum:
-          - stop
-          - length
-          - tool_calls
   securitySchemes:
     bearerAuth:
       type: http
