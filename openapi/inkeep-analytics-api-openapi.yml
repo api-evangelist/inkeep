@@ -103,59 +103,6 @@ paths:
                 $ref: '#/components/schemas/Event'
 components:
   schemas:
-    CreateEventRequest:
-      type: object
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          description: The custom event type.
-          example: answer_copied
-        conversationId:
-          type:
-          - string
-          - 'null'
-          description: Optional conversation the event is associated with.
-        properties:
-          type:
-          - object
-          - 'null'
-          description: Optional arbitrary metadata for the event.
-    ChatMessage:
-      type: object
-      required:
-      - role
-      - content
-      properties:
-        role:
-          type: string
-          enum:
-          - system
-          - user
-          - assistant
-          - tool
-          description: The role of the message author.
-        content:
-          type: string
-          description: The message content.
-    Conversation:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
-          description: The conversation identifier.
-        type:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatMessage'
     CreateConversationRequest:
       type: object
       required:
@@ -203,6 +150,53 @@ components:
           description: Optional reason codes for the feedback.
           items:
             type: string
+    Event:
+      type: object
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    ChatMessage:
+      type: object
+      required:
+      - role
+      - content
+      properties:
+        role:
+          type: string
+          enum:
+          - system
+          - user
+          - assistant
+          - tool
+          description: The role of the message author.
+        content:
+          type: string
+          description: The message content.
+    Conversation:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: The conversation identifier.
+        type:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
     Feedback:
       type: object
       required:
@@ -218,19 +212,25 @@ components:
         createdAt:
           type: string
           format: date-time
-    Event:
+    CreateEventRequest:
       type: object
       required:
-      - id
       - type
       properties:
-        id:
-          type: string
         type:
           type: string
-        createdAt:
-          type: string
-          format: date-time
+          description: The custom event type.
+          example: answer_copied
+        conversationId:
+          type:
+          - string
+          - 'null'
+          description: Optional conversation the event is associated with.
+        properties:
+          type:
+          - object
+          - 'null'
+          description: Optional arbitrary metadata for the event.
   securitySchemes:
     bearerAuth:
       type: http
