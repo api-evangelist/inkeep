@@ -96,16 +96,16 @@ apis:
     url: collections/inkeep.opencollection.json
   - type: Documentation
     url: https://docs.inkeep.com/cloud/overview/developer-platform
-- aid: inkeep:inkeep-chat-api
-  name: Inkeep Chat API
+- aid: inkeep:inkeep-chat-completions-api
+  name: Inkeep Chat Completions API
   description: OpenAI-compatible RAG chat completions over your content.
-  humanURL: https://docs.inkeep.com/cloud/ai-api/chat-completions-api
-  baseURL: https://api.inkeep.com/v1
+  humanURL: https://docs.inkeep.com/api-reference
+  baseURL: https://api.inkeep.com
   tags:
-  - Chat
+  - Chat Completions
   properties:
   - type: OpenAPI
-    url: openapi/inkeep-chat-api-openapi.yml
+    url: openapi/inkeep-chat-completions-api-openapi.yml
   - type: Documentation
     url: https://docs.inkeep.com/cloud/ai-api/chat-completions-api
   - type: APIReference
