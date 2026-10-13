@@ -1,0 +1,23 @@
+edges:
+- partner_name: OpenAI
+  partner: openai
+  partner_match: domain
+  type: contract
+  channel: provider-built
+  relationship: compatible
+  direction: provider-built
+  evidence: https://github.com/api-evangelist/inkeep/blob/main/openapi/inkeep-chat-completions-api-openapi.yml#L18
+  contract_reference:
+    repo: inkeep
+    spec_file: inkeep-chat-completions-api-openapi.yml
+    property: description
+    value: OpenAI-compatible
+    note: 'inkeep declares OpenAI compatibility: ''description: OpenAI-compatible RAG chat completions over your
+      content.'''
+    detected_by: sweep-model-routing.py
+    detected: '2026-10-13'
+  detected_by: sweep-model-routing.py
+  first_seen: '2026-10-13'
+generated: '2026-10-13'
+method: searched
+checked: []
