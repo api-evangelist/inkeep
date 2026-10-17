@@ -103,62 +103,6 @@ paths:
                 $ref: '#/components/schemas/Event'
 components:
   schemas:
-    Feedback:
-      type: object
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-        messageId:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-    CreateEventRequest:
-      type: object
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          description: The custom event type.
-          example: answer_copied
-        conversationId:
-          type:
-          - string
-          - 'null'
-          description: Optional conversation the event is associated with.
-        properties:
-          type:
-          - object
-          - 'null'
-          description: Optional arbitrary metadata for the event.
-    CreateFeedbackRequest:
-      type: object
-      required:
-      - type
-      - messageId
-      properties:
-        type:
-          type: string
-          description: Feedback polarity.
-          enum:
-          - positive
-          - negative
-        messageId:
-          type: string
-          description: The logged message the feedback applies to.
-        reasons:
-          type:
-          - array
-          - 'null'
-          description: Optional reason codes for the feedback.
-          items:
-            type: string
     ChatMessage:
       type: object
       required:
@@ -176,23 +120,6 @@ components:
         content:
           type: string
           description: The message content.
-    Conversation:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
-          description: The conversation identifier.
-        type:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        messages:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatMessage'
     CreateConversationRequest:
       type: object
       required:
@@ -218,6 +145,21 @@ components:
           - object
           - 'null'
           description: Optional arbitrary metadata for the conversation.
+    Feedback:
+      type: object
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        messageId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
     Event:
       type: object
       required:
@@ -231,6 +173,64 @@ components:
         createdAt:
           type: string
           format: date-time
+    Conversation:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: The conversation identifier.
+        type:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+    CreateFeedbackRequest:
+      type: object
+      required:
+      - type
+      - messageId
+      properties:
+        type:
+          type: string
+          description: Feedback polarity.
+          enum:
+          - positive
+          - negative
+        messageId:
+          type: string
+          description: The logged message the feedback applies to.
+        reasons:
+          type:
+          - array
+          - 'null'
+          description: Optional reason codes for the feedback.
+          items:
+            type: string
+    CreateEventRequest:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          description: The custom event type.
+          example: answer_copied
+        conversationId:
+          type:
+          - string
+          - 'null'
+          description: Optional conversation the event is associated with.
+        properties:
+          type:
+          - object
+          - 'null'
+          description: Optional arbitrary metadata for the event.
   securitySchemes:
     bearerAuth:
       type: http
