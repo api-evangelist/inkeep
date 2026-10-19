@@ -1,0 +1,239 @@
+openapi: 3.2.0
+info:
+  title: Inkeep AI Analytics API
+  description: Specification of Inkeep's developer platform REST surface.
+  termsOfService: https://inkeep.com/terms
+  contact:
+    name: Inkeep Support
+    email: support@inkeep.com
+    url: https://inkeep.com
+  version: '1.0'
+servers:
+- url: https://api.inkeep.com/v1
+  description: Inkeep developer platform base (OpenAI-compatible).
+security:
+- bearerAuth: []
+tags:
+- name: Analytics
+  description: Log conversations, feedback, and custom interaction events.
+paths:
+  /conversations:
+    post:
+      operationId: createConversation
+      tags:
+      - Analytics
+      summary: Log an OpenAI-compatible conversation
+      description: Logs a complete OpenAI-format conversation (messages plus metadata) to the Inkeep Analytics service so it is viewable and reportable in the Inkeep Portal.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateConversationRequest'
+      responses:
+        '200':
+          description: The created conversation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+        '401':
+          description: Missing or invalid API key.
+  /conversations/{id}:
+    get:
+      operationId: getConversation
+      tags:
+      - Analytics
+      summary: Fetch a logged conversation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The conversation identifier.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The requested conversation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+        '404':
+          description: Conversation not found.
+  /feedback:
+    post:
+      operationId: createFeedback
+      tags:
+      - Analytics
+      summary: Log end-user feedback for a message
+      description: Records positive or negative end-user feedback on a logged message, powering thumbs up / thumbs down style quality signals in the Portal.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFeedbackRequest'
+      responses:
+        '200':
+          description: The created feedback record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+  /events:
+    post:
+      operationId: logEvent
+      tags:
+      - Analytics
+      summary: Log a custom interaction event
+      description: Logs a custom user-interaction event such as `answer_copied` or `chat_shared` for analytics and reporting.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEventRequest'
+      responses:
+        '200':
+          description: The created event record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+components:
+  schemas:
+    ChatMessage:
+      type: object
+      required:
+      - role
+      - content
+      properties:
+        role:
+          type: string
+          enum:
+          - system
+          - user
+          - assistant
+          - tool
+          description: The role of the message author.
+        content:
+          type: string
+          description: The message content.
+    CreateConversationRequest:
+      type: object
+      required:
+      - type
+      - messages
+      properties:
+        type:
+          type: string
+          description: The conversation type (e.g. `openai`).
+          example: openai
+        messages:
+          type: array
+          description: The OpenAI-format messages that make up the conversation.
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+        userProperties:
+          type:
+          - object
+          - 'null'
+          description: Optional end-user properties to associate with the conversation.
+        properties:
+          type:
+          - object
+          - 'null'
+          description: Optional arbitrary metadata for the conversation.
+    Feedback:
+      type: object
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        messageId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    Event:
+      type: object
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    Conversation:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: The conversation identifier.
+        type:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+    CreateFeedbackRequest:
+      type: object
+      required:
+      - type
+      - messageId
+      properties:
+        type:
+          type: string
+          description: Feedback polarity.
+          enum:
+          - positive
+          - negative
+        messageId:
+          type: string
+          description: The logged message the feedback applies to.
+        reasons:
+          type:
+          - array
+          - 'null'
+          description: Optional reason codes for the feedback.
+          items:
+            type: string
+    CreateEventRequest:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          description: The custom event type.
+          example: answer_copied
+        conversationId:
+          type:
+          - string
+          - 'null'
+          description: Optional conversation the event is associated with.
+        properties:
+          type:
+          - object
+          - 'null'
+          description: Optional arbitrary metadata for the event.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Inkeep API key
+      description: 'Bearer token using an API key created in the Inkeep dashboard under Projects > Assistants > Create assistant > API. Set the header `Authorization: Bearer <INKEEP_API_KEY>`.'

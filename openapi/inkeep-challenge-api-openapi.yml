@@ -1,0 +1,24 @@
+openapi: 3.2.0
+info:
+  title: Inkeep Challenge API
+  summary: Inkeep Search and Chat API
+  description: Inkeep is an AI-powered search and chat platform
+  version: 0.1.0
+servers:
+- url: https://api.inkeep.com
+  description: Production server
+tags:
+- name: Challenge
+paths:
+  /v1/challenge:
+    get:
+      summary: Challenge
+      operationId: challenge_v1_challenge_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Challenge

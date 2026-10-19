@@ -96,9 +96,75 @@ apis:
     url: collections/inkeep.opencollection.json
   - type: Documentation
     url: https://docs.inkeep.com/cloud/overview/developer-platform
+- aid: inkeep:inkeep-challenge-api
+  name: Inkeep Challenge API
+  description: The Challenge API from Inkeep — 1 operation(s) for challenge.
+  humanURL: https://docs.inkeep.com/api-reference
+  baseURL: https://api.inkeep.com
+  tags:
+  - Challenge
+  properties:
+  - type: OpenAPI
+    url: openapi/inkeep-challenge-api-openapi.yml
+  - type: Documentation
+    url: https://docs.inkeep.com/cloud/ai-api/chat-completions-api
+  - type: APIReference
+    url: https://docs.inkeep.com/cloud/ai-api/rag-mode
+  - type: AsyncAPI
+    url: asyncapi/inkeep-asyncapi.yml
+  - type: PostmanCollection
+    url: collections/inkeep.postman_collection.json
+  - type: OpenCollection
+    url: collections/inkeep.opencollection.json
+  - type: Documentation
+    url: https://docs.inkeep.com/cloud/overview/developer-platform
+- aid: inkeep:inkeep-chat-sessions-api
+  name: Inkeep Chat Sessions API
+  description: The Chat Sessions API from Inkeep — 2 operation(s) for chat sessions.
+  humanURL: https://docs.inkeep.com/api-reference
+  baseURL: https://api.inkeep.com
+  tags:
+  - Chat Sessions
+  properties:
+  - type: OpenAPI
+    url: openapi/inkeep-chat-sessions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.inkeep.com/cloud/ai-api/chat-completions-api
+  - type: APIReference
+    url: https://docs.inkeep.com/cloud/ai-api/rag-mode
+  - type: AsyncAPI
+    url: asyncapi/inkeep-asyncapi.yml
+  - type: PostmanCollection
+    url: collections/inkeep.postman_collection.json
+  - type: OpenCollection
+    url: collections/inkeep.opencollection.json
+  - type: Documentation
+    url: https://docs.inkeep.com/cloud/overview/developer-platform
+- aid: inkeep:inkeep-hello-api
+  name: Inkeep Hello API
+  description: The Hello API from Inkeep — 1 operation(s) for hello.
+  humanURL: https://docs.inkeep.com/api-reference
+  baseURL: https://api.inkeep.com
+  tags:
+  - Hello
+  properties:
+  - type: OpenAPI
+    url: openapi/inkeep-hello-api-openapi.yml
+  - type: Documentation
+    url: https://docs.inkeep.com/cloud/ai-api/chat-completions-api
+  - type: APIReference
+    url: https://docs.inkeep.com/cloud/ai-api/rag-mode
+  - type: AsyncAPI
+    url: asyncapi/inkeep-asyncapi.yml
+  - type: PostmanCollection
+    url: collections/inkeep.postman_collection.json
+  - type: OpenCollection
+    url: collections/inkeep.opencollection.json
+  - type: Documentation
+    url: https://docs.inkeep.com/cloud/overview/developer-platform
 - aid: inkeep:inkeep-chat-completions-api
   name: Inkeep Chat Completions API
-  description: OpenAI-compatible RAG chat completions over your content.
+  description: The Chat Completions API from Inkeep — 1 operation(s) for chat completions.
   humanURL: https://docs.inkeep.com/api-reference
   baseURL: https://api.inkeep.com
   tags:

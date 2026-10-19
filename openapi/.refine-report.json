@@ -1,25 +1,38 @@
 {
   "provider": "inkeep",
   "sources": [
-    "_original/inkeep-openapi.yml"
+    "_original/inkeep-openapi.json"
   ],
   "outputs": [
     "inkeep-analytics-api-openapi.yml",
-    "inkeep-chat-api-openapi.yml"
+    "inkeep-challenge-api-openapi.yml",
+    "inkeep-chat-api-openapi.yml",
+    "inkeep-chat-sessions-api-openapi.yml",
+    "inkeep-hello-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 1 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
-    "inkeep-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
-    "superseded outputs removed: inkeep-chat-completions-api-openapi.yml",
-    "apis.yml register: written (+1 apis, 3 total)"
+    "inkeep-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "inkeep-openapi.json: tagged paths POST /v0/chat_sessions/chat_results -> Chat Sessions",
+    "inkeep-openapi.json: tagged paths POST /v0/chat_sessions/{chat_session_id}/chat_results -> Chat Sessions",
+    "inkeep-openapi.json: tagged paths GET /v1/hello -> Hello",
+    "inkeep-openapi.json: tagged paths POST /v1/chat/completions -> Chat",
+    "inkeep-openapi.json: tagged paths GET /v1/challenge -> Challenge",
+    "inkeep-openapi.json: tagged paths POST /analytics/{path} -> Analytics",
+    "inkeep-openapi.json: tagged paths PATCH /analytics/{path} -> Analytics",
+    "inkeep-openapi.json: tagged paths GET /analytics/{path} -> Analytics",
+    "inkeep-openapi.json: tagged paths DELETE /analytics/{path} -> Analytics",
+    "inkeep-openapi.json: tagged paths OPTIONS /analytics/{path} -> Analytics",
+    "inkeep-openapi.json: tagged paths PUT /analytics/{path} -> Analytics",
+    "inkeep-openapi.json: declared missing tag: Analytics",
+    "inkeep-openapi.json: declared missing tag: Challenge",
+    "inkeep-openapi.json: declared missing tag: Chat",
+    "inkeep-openapi.json: declared missing tag: Chat Sessions",
+    "inkeep-openapi.json: declared missing tag: Hello",
+    "apis.yml register: written (+4 apis, 6 total)"
   ],
-  "skipped": [
-    "inkeep-analytics-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "inkeep-chat-completions-api-openapi.yml: previously refined output, superseded by openapi/_original/"
-  ]
+  "skipped": []
 }

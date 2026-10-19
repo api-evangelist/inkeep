@@ -1,0 +1,24 @@
+openapi: 3.2.0
+info:
+  title: Inkeep Hello API
+  summary: Inkeep Search and Chat API
+  description: Inkeep is an AI-powered search and chat platform
+  version: 0.1.0
+servers:
+- url: https://api.inkeep.com
+  description: Production server
+tags:
+- name: Hello
+paths:
+  /v1/hello:
+    get:
+      summary: Get Hello
+      operationId: get_hello_v1_hello_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Hello
