@@ -6,7 +6,7 @@ edges:
   channel: provider-built
   relationship: compatible
   direction: provider-built
-  evidence: https://github.com/api-evangelist/inkeep/blob/main/openapi/inkeep-chat-completions-api-openapi.yml#L18
+  evidence: https://github.com/api-evangelist/inkeep/blob/main/openapi/_superseded/2026-10-19-stale/inkeep-chat-completions-api-openapi.yml#L18
   contract_reference:
     repo: inkeep
     spec_file: inkeep-chat-completions-api-openapi.yml
@@ -18,6 +18,26 @@ edges:
     detected: '2026-10-15'
   detected_by: sweep-model-routing.py
   first_seen: '2026-10-13'
+- partner_name: Zendesk (own)
+  partner: zendesk
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://www.zendesk.com/marketplace/apps/support/1065305/keep-ai-copilot-for-support/
+  mirror_of: zendesk/integrations/zendesk-integration-edges.yml
+  apps:
+  - Keep AI Copilot for Support
+  listing_count: 1
+  detected: '2026-10-20'
+  detected_by: mirror-platform-listings.py
+  category: AI and Bots
 generated: '2026-10-13'
 method: searched
-checked: []
+checked:
+- zendesk/integrations/zendesk-integration-edges.yml
+source:
+- zendesk/integrations/zendesk-integration-edges.yml

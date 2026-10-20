@@ -9,7 +9,7 @@
   partner_name: OpenAI
   type: contract
   channel: provider-built
-  evidence: https://github.com/api-evangelist/inkeep/blob/main/openapi/inkeep-chat-completions-api-openapi.yml#L18
+  evidence: https://github.com/api-evangelist/inkeep/blob/main/openapi/_superseded/2026-10-19-stale/inkeep-chat-completions-api-openapi.yml#L18
   source: edge
   relationship: compatible
   contract_reference:
@@ -21,5 +21,18 @@
       content.'''
     detected_by: sweep-model-routing.py
     detected: '2026-10-15'
+  status: not-a-workflow
+  arazzo: null
+- slug: inkeep-zendesk-own
+  label: Zendesk (own)
+  partner: zendesk
+  partner_name: Zendesk (own)
+  category: AI and Bots
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://www.zendesk.com/marketplace/apps/support/1065305/keep-ai-copilot-for-support/
+  source: edge
+  relationship: platform-app
   status: not-a-workflow
   arazzo: null
