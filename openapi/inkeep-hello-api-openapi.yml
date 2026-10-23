@@ -22,3 +22,9 @@ paths:
               schema: {}
       tags:
       - Hello
+x-provenance:
+  method: harvested
+  publisher: Inkeep
+  source: https://api.inkeep.com/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
